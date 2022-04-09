@@ -7,6 +7,8 @@ package dicom;
 import dicom.config.DCMconfig;
 import dicom.operations.DCMassociation;
 import dicom.operations.DCMcecho;
+import dicom.operations.DCMcfind;
+import dicom.operations.DCMimage;
 import dicom.operations.DCMinfo;
 
 /**
@@ -21,8 +23,12 @@ public class Dicom {
     public static void main(String[] args) {
         
         DCMconfig dcmConfig= new DCMconfig();
-        dcmConfig.setLOCAL_AE("MHPC");
-        dcmConfig.setREMOTE_AE("SERVERPACS");
+        /*dcmConfig.setLOCAL_AE("MHPC");
+        dcmConfig.setREMOTE_AE("SERVERPACS");*/
+        dcmConfig.setREMOTE_HOST("10.16.107.13");
+        dcmConfig.setLOCAL_AE("EMULATOR_TEST");
+        dcmConfig.setREMOTE_AE("phia-pacsFIR");
+       
         dcmConfig.setREMOTE_PORT(2104);
                 
         // TODO code application logic here
@@ -32,8 +38,15 @@ public class Dicom {
        
        //dcmcEcho.echo();
        
-        DCMassociation dcmAssociation = new DCMassociation(dcmConfig);
-        dcmAssociation.DCMstartAssociation();
+        //DCMassociation dcmAssociation = new DCMassociation(dcmConfig);
+        //dcmAssociation.DCMstartAssociation();
+        
+        
+        //DCMimage dcmImage = new DCMimage();
+        //dcmImage.image();
+        
+        DCMcfind cFind= new DCMcfind(dcmConfig);
+        cFind.cFind();
     }
     
 }
