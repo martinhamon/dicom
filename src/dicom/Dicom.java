@@ -10,6 +10,7 @@ import dicom.operations.DCMcecho;
 import dicom.operations.DCMcfind;
 import dicom.operations.DCMimage;
 import dicom.operations.DCMinfo;
+import dicom.operations.DCMwado;
 
 /**
  *
@@ -45,8 +46,11 @@ public class Dicom {
         //DCMimage dcmImage = new DCMimage();
         //dcmImage.image();
         
-        DCMcfind cFind= new DCMcfind(dcmConfig);
-        cFind.cFind();
+       // DCMcfind cFind= new DCMcfind(dcmConfig);
+        //cFind.cFind();
+        
+        DCMwado dcmWado = new DCMwado(dcmConfig);
+        dcmWado.wadoRequest();
     }
     
 }

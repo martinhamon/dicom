@@ -29,18 +29,27 @@ DCMconfig dcmConfig;
          
           try {
          //build the attributes that you would like to retrieve as well as passing in any search criteria
-                identifier.putNewAttribute(TagFromName.QueryRetrieveLevel).addValue("STUDY"); //specific query root
-                identifier.putNewAttribute(TagFromName.PatientName,specificCharacterSet).addValue("hamon");
+                identifier.putNewAttribute(TagFromName.QueryRetrieveLevel).addValue("IMAGE"); //specific query root
+               // identifier.putNewAttribute(TagFromName.PatientName,specificCharacterSet).addValue("hamon");
+               identifier.putNewAttribute(TagFromName.PatientName);
                 identifier.putNewAttribute(TagFromName.PatientID,specificCharacterSet);
                 identifier.putNewAttribute(TagFromName.PatientBirthDate);
                 identifier.putNewAttribute(TagFromName.PatientSex);
-                identifier.putNewAttribute(TagFromName.StudyInstanceUID);
-                identifier.putNewAttribute(TagFromName.SOPInstanceUID);
+                identifier.putNewAttribute(TagFromName.StudyInstanceUID,specificCharacterSet).addValue("1.2.840.113564.99.1.345050825937.5217.2022410163440493.11233.2");
+                identifier.putNewAttribute(TagFromName.SeriesInstanceUID);
+                identifier.putNewAttribute(TagFromName.SOPInstanceUID,specificCharacterSet).addValue("1.3.46.670589.61.9527.2.20220410165344202.35137.69");
                 identifier.putNewAttribute(TagFromName.StudyDescription);
-                identifier.putNewAttribute(TagFromName.StudyDate);
+                identifier.putNewAttribute(TagFromName.StudyDate,specificCharacterSet).addValue("20220410");
                 identifier.putNewAttribute(TagFromName.AccessionNumber);
-                FindIdentifierHandlerCfind ih = new FindIdentifierHandlerCfind();
-                //IdentifierHandler ih = new IdentifierHandler();
+                identifier.putNewAttribute(TagFromName.Modality);
+                identifier.putNewAttribute(TagFromName.ModalitiesInStudy);
+                identifier.putNewAttribute(TagFromName.ReferringPhysicianName);
+                 identifier.putNewAttribute(TagFromName.OperatorsName);
+                 
+             identifier.putNewAttribute(TagFromName.UID);
+                 
+                //FindIdentifierHandlerCfind ih = new FindIdentifierHandlerCfind();
+                IdentifierHandler ih = new IdentifierHandler();
 
                 //retrieve all studies belonging to patient with name 'Bowen'
                 new FindSOPClassSCU(dcmConfig.getREMOTE_HOST(),
