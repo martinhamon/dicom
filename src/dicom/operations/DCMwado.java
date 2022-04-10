@@ -26,10 +26,14 @@ private DCMconfig dcmConfig;
         
         
     try {
-        WadoRequest wdr = new WadoRequest("http://10.16.107.13/um/webapp_services/wado?requestType=WADO&studyUID=1.2.840.113564.99.1.345050825937.5217.2022410163440493.11233.2&" +
-"seriesUID=1.3.46.670589.61.9527.2.20220410165344202.35137&objectUID=1.3.46.670589.61.9527.2.20220410165344202.35137.69&" +
-"contentType=application%2dicom");
-       
+        //http://10.16.107.13/um/webapp_services/wado?requestType=WADO&studyUID=1.2.840.113564.99.1.345050825937.5217.2022410163440493.11233.2&seriesUID=1.3.46.670589.61.9527.2.20220410165344202.35137&objectUID=1.3.46.670589.61.9527.2.20220410165344202.35137.69&contentType=application/dicom
+        WadoRequest wdr = new WadoRequest
+        ("http://10.16.107.13/um/webapp_services/wado?requestType=WADO&studyUID=1.2.840.113564.99.1.345050825937.5217.2022410163440493.11233.2&" +
+        "seriesUID=1.3.46.670589.61.9527.2.20220410165344202.35137&objectUID=1.3.46.670589.61.9527.2.20220410165344202.35137.69&" +
+        "contentType=application%2dicom");
+       int i= wdr.getImageQuality();
+        System.out.println(i);
+
     } catch (Exception ex) {
         Logger.getLogger(DCMwado.class.getName()).log(Level.SEVERE, null, ex);
     }
