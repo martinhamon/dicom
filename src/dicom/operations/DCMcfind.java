@@ -29,7 +29,7 @@ DCMconfig dcmConfig;
          
           try {
          //build the attributes that you would like to retrieve as well as passing in any search criteria
-                identifier.putNewAttribute(TagFromName.QueryRetrieveLevel).addValue("IMAGE"); //specific query root
+                identifier.putNewAttribute(TagFromName.QueryRetrieveLevel).addValue("STUDY"); //specific query root
                // identifier.putNewAttribute(TagFromName.PatientName,specificCharacterSet).addValue("hamon");
                identifier.putNewAttribute(TagFromName.PatientName);
                 identifier.putNewAttribute(TagFromName.PatientID,specificCharacterSet);

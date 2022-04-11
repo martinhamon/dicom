@@ -4,6 +4,7 @@
  */
 package dicom;
 
+import dicom.basedatos.DBconecction;
 import dicom.config.DCMconfig;
 import dicom.operations.DCMassociation;
 import dicom.operations.DCMcecho;
@@ -34,10 +35,12 @@ public class Dicom {
                 
         // TODO code application logic here
         //DCMinfo dcmInfo = new DCMinfo();
-       //DCMcecho dcmcEcho= new DCMcecho(dcmConfig);
-       // dcmInfo.readDicomAttributes ();
        
-       //dcmcEcho.echo();
+       
+       // dcmInfo.readDicomAttributes ();
+      // DCMcecho dcmcEcho= new DCMcecho(dcmConfig);
+      //  dcmcEcho.echo();
+       
        
         //DCMassociation dcmAssociation = new DCMassociation(dcmConfig);
         //dcmAssociation.DCMstartAssociation();
@@ -47,10 +50,13 @@ public class Dicom {
         //dcmImage.image();
         
        // DCMcfind cFind= new DCMcfind(dcmConfig);
-        //cFind.cFind();
+       // cFind.cFind();
         
-        DCMwado dcmWado = new DCMwado(dcmConfig);
-        dcmWado.wadoRequest();
+        //DCMwado dcmWado = new DCMwado(dcmConfig);
+       // dcmWado.wadoRequest();
+       
+       DBconecction dbConnection = new DBconecction();
+       dbConnection.connectionTest();
     }
     
 }

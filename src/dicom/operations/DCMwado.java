@@ -5,7 +5,7 @@
 package dicom.operations;
 
 import com.pixelmed.web.WadoRequest;
-import com.pixelmed.web.WebRequest;
+
 import dicom.config.DCMconfig;
 import java.util.logging.Level;
 import java.util.logging.Logger;

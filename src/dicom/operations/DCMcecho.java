@@ -28,7 +28,7 @@ public class DCMcecho {
     
     public void echo(){
         try {
-            new VerificationSOPClassSCU(dcmConfig.getREMOTE_AE(),dcmConfig.getREMOTE_PORT(),dcmConfig.getREMOTE_AE(),dcmConfig.getLOCAL_AE(),false);
+            new VerificationSOPClassSCU(dcmConfig.getREMOTE_HOST(),dcmConfig.getREMOTE_PORT(),dcmConfig.getREMOTE_AE(),dcmConfig.getLOCAL_AE(),false);
             
             System.out.println("Conexion correcta....");
         } catch (DicomNetworkException ex) {
