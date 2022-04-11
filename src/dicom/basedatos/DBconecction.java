@@ -4,12 +4,15 @@
  */
 package dicom.basedatos;
 
+import dicom.utils.Patient;
+import dicom.utils.Study;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -18,11 +21,11 @@ import java.sql.Statement;
 public class DBconecction {
     
     Connection conn = null;
-
+    private LinkedHashMap<String,Study> wlPatients= null;
     public DBconecction() {
     }
     
-    public void connectionTest(){
+    public LinkedHashMap<String,Study> connectionTest(){
         try {
             
             String SqlQuery="select pt.szPatientId as 'IDTASY',pt.szName ,szAccessionNumber,ImagingServiceRequest.dtCreate, rp.szCodeMeaning,sp.szModality\n" +
@@ -37,19 +40,26 @@ public class DBconecction {
             String pass = "R0chesterRules!";
             conn = DriverManager.getConnection(dbURL, user, pass);
             if (conn != null) {
-                DatabaseMetaData dm = (DatabaseMetaData) conn.getMetaData();
-                
-                System.out.println("Driver name: " + dm.getDriverName());
-                System.out.println("Driver version: " + dm.getDriverVersion());
-                System.out.println("Product name: " + dm.getDatabaseProductName());
-                System.out.println("Product version: " + dm.getDatabaseProductVersion());
-            }
-            Statement stmt = conn.createStatement();
+               Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(SqlQuery);
+            wlPatients = new LinkedHashMap<String,Study>();
                 while (rs.next()) {
                  String idTasy = rs.getString("IDTASY");
-                 System.out.println(idTasy + "\n");
-               }
+                 String name = rs.getString("szName");
+                 String AccessionNumber = rs.getString("szAccessionNumber");
+                 String StudyDate = rs.getString("dtCreate");
+                 String StudyDescription = rs.getString("szCodeMeaning");
+                 String Modality = rs.getString("szModality");
+                 System.out.println(idTasy+ " " + name+ " " +AccessionNumber+ " " +StudyDate+ " " +StudyDescription+ " " +Modality+  "\n");
+                
+                 Patient patient = new Patient(name, idTasy);
+                 Study study = new Study(AccessionNumber, StudyDate,StudyDescription, Modality, patient);
+                 wlPatients.put(AccessionNumber, study);
+                
+                
+                }
+            }
+            
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -61,6 +71,7 @@ public class DBconecction {
                 ex.printStackTrace();
             }
         }
+        return wlPatients;
     }
     }
     

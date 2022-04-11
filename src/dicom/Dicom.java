@@ -12,6 +12,7 @@ import dicom.operations.DCMcfind;
 import dicom.operations.DCMimage;
 import dicom.operations.DCMinfo;
 import dicom.operations.DCMwado;
+import java.util.LinkedHashMap;
 
 /**
  *
@@ -54,9 +55,12 @@ public class Dicom {
         
         //DCMwado dcmWado = new DCMwado(dcmConfig);
        // dcmWado.wadoRequest();
-       
+        DCMcfind cFind= new DCMcfind(dcmConfig);
+      LinkedHashMap  pacsPatients =  cFind.cFind();
        DBconecction dbConnection = new DBconecction();
-       dbConnection.connectionTest();
+      LinkedHashMap  wlPatients = dbConnection.connectionTest();
+       
+       
     }
     
 }
