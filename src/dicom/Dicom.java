@@ -13,6 +13,8 @@ import dicom.operations.DCMimage;
 import dicom.operations.DCMinfo;
 import dicom.operations.DCMwado;
 import java.util.LinkedHashMap;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  *
@@ -56,11 +58,31 @@ public class Dicom {
         //DCMwado dcmWado = new DCMwado(dcmConfig);
        // dcmWado.wadoRequest();
         DCMcfind cFind= new DCMcfind(dcmConfig);
-      LinkedHashMap  pacsPatients =  cFind.cFind();
+      TreeMap   pacsPatients =  cFind.cFind();
+      TreeMap   pacsPatients2 = (TreeMap) pacsPatients.clone();
        DBconecction dbConnection = new DBconecction();
-      LinkedHashMap  wlPatients = dbConnection.connectionTest();
+      TreeMap   wlPatients = dbConnection.connectionTest();
        
-       
+      
+      Set <String> anKeys = pacsPatients2.keySet();
+      
+      // Empieza con HGDL y no esta en la WL
+     
+      
+      anKeys.forEach(
+              key -> {
+                  if ( (key.startsWith("HGDL") && !wlPatients.containsKey(key) ))
+                  {
+                     pacsPatients.remove(key);
+                  }
+              }
+      
+      );
+      
+        System.out.println("Estudios con inconsistencias: " + pacsPatients.size());
+       int i=0;
     }
+    
+    
     
 }

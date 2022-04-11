@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -21,11 +22,11 @@ import java.util.LinkedHashMap;
 public class DBconecction {
     
     Connection conn = null;
-    private LinkedHashMap<String,Study> wlPatients= null;
+    private TreeMap <String,Study> wlPatients= null;
     public DBconecction() {
     }
     
-    public LinkedHashMap<String,Study> connectionTest(){
+    public TreeMap <String,Study> connectionTest(){
         try {
             
             String SqlQuery="select pt.szPatientId as 'IDTASY',pt.szName ,szAccessionNumber,ImagingServiceRequest.dtCreate, rp.szCodeMeaning,sp.szModality\n" +
@@ -42,7 +43,7 @@ public class DBconecction {
             if (conn != null) {
                Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(SqlQuery);
-            wlPatients = new LinkedHashMap<String,Study>();
+            wlPatients = new TreeMap <String,Study>();
                 while (rs.next()) {
                  String idTasy = rs.getString("IDTASY");
                  String name = rs.getString("szName");

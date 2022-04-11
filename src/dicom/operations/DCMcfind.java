@@ -16,6 +16,7 @@ import dicom.utils.FindIdentifierHandlerCfind;
 import dicom.utils.Patient;
 import dicom.utils.Study;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 
 /**
  *
@@ -23,12 +24,12 @@ import java.util.LinkedHashMap;
  */
 public class DCMcfind  extends IdentifierHandler {
     private DCMconfig dcmConfig;
-    private LinkedHashMap<String,Study> pacsPatients= null;
+    private TreeMap  <String,Study> pacsPatients= null;
     public DCMcfind(DCMconfig dcmConfig) {
         this.dcmConfig = dcmConfig;
     }
     
-    public LinkedHashMap cFind(){
+    public TreeMap  cFind(){
          AttributeList identifier = new AttributeList();
           SpecificCharacterSet specificCharacterSet = new SpecificCharacterSet((String[])null);
          
@@ -55,7 +56,7 @@ public class DCMcfind  extends IdentifierHandler {
                  
                 //FindIdentifierHandlerCfind ih = new FindIdentifierHandlerCfind();
                 IdentifierHandler ih = new IdentifierHandler();
-                pacsPatients = new LinkedHashMap<String,Study>();
+                pacsPatients = new TreeMap <String,Study>();
                 //retrieve all studies belonging to patient with name 'Bowen'
                 new FindSOPClassSCU(dcmConfig.getREMOTE_HOST(),
                         dcmConfig.getREMOTE_PORT(),
