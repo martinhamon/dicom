@@ -45,7 +45,7 @@ public class DCMcfind  extends IdentifierHandler {
                 identifier.putNewAttribute(TagFromName.SeriesInstanceUID);
                 identifier.putNewAttribute(TagFromName.SOPInstanceUID,specificCharacterSet);
                 identifier.putNewAttribute(TagFromName.StudyDescription);
-                identifier.putNewAttribute(TagFromName.StudyDate,specificCharacterSet).addValue("20220411");
+                identifier.putNewAttribute(TagFromName.StudyDate,specificCharacterSet).addValue(dcmConfig.getDateStart());
                 identifier.putNewAttribute(TagFromName.AccessionNumber);
                 identifier.putNewAttribute(TagFromName.Modality);
                 identifier.putNewAttribute(TagFromName.ModalitiesInStudy);

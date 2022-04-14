@@ -4,6 +4,9 @@
  */
 package dicom.config;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  *
  * @author MH
@@ -14,7 +17,36 @@ public class DCMconfig {
     private int LOCAL_PORT=0;
     private int REMOTE_PORT=0;
     private String REMOTE_HOST="";
+    private Date dateStart;
+    private Date dateEnd;
     
+    SimpleDateFormat formatter= new SimpleDateFormat();
+    Date date = new Date(System.currentTimeMillis());
+    
+    
+    //Format Date to pattern. Ej:  yyyy-MM-dd  or yyyyMMdd
+    public void setFormat (String format){
+        formatter.applyPattern(format);
+    }
+    public String getDateStart() {
+        
+        return formatter.format(dateStart);
+    }
+
+    public void setDateStart(Date dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return formatter.format(dateEnd);
+    }
+
+    public void setDateEnd(Date dateEnd) {
+        this.dateEnd = dateEnd;
+    }
+    
+    
+       
     public String getREMOTE_HOST() {
         return REMOTE_HOST;
     }
