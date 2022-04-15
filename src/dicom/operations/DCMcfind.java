@@ -29,7 +29,7 @@ public class DCMcfind  extends IdentifierHandler {
         this.dcmConfig = dcmConfig;
     }
     
-    public TreeMap  cFind(){
+    public TreeMap<String,Study>  cFind(){
          AttributeList identifier = new AttributeList();
           SpecificCharacterSet specificCharacterSet = new SpecificCharacterSet((String[])null);
          

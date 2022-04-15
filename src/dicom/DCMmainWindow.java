@@ -7,9 +7,15 @@ package dicom;
 import dicom.basedatos.DBconecction;
 import dicom.config.DCMconfig;
 import dicom.operations.DCMcfind;
+import dicom.utils.Study;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
+import javax.swing.DefaultListModel;
+import javax.swing.JList;
+import javax.swing.ListSelectionModel;
 
 /**
  *
@@ -33,16 +39,12 @@ public class DCMmainWindow extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         btnDCMfind = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        studyPanel = new javax.swing.JScrollPane();
+        patientList = new java.awt.List();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
 
         btnDCMfind.setText("Verificar");
         btnDCMfind.setActionCommand("dcmFind");
@@ -54,14 +56,17 @@ public class DCMmainWindow extends javax.swing.JFrame {
 
         jButton2.setText("jButton2");
 
+        studyPanel.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Estudios inconcistentes"));
+        studyPanel.setViewportView(patientList);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addComponent(studyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnDCMfind)
                     .addComponent(jButton2))
@@ -70,14 +75,15 @@ public class DCMmainWindow extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
                 .addGap(33, 33, 33)
                 .addComponent(btnDCMfind)
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
                 .addContainerGap(275, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(studyPanel)
+                .addContainerGap())
         );
 
         pack();
@@ -127,10 +133,10 @@ public class DCMmainWindow extends javax.swing.JFrame {
              @Override
              public void run() {
                  DCMcfind cFind= new DCMcfind(dcmConfig);
-      TreeMap   pacsPatients =  cFind.cFind();
-      TreeMap   pacsPatients2 = (TreeMap) pacsPatients.clone();
-       DBconecction dbConnection = new DBconecction(dcmConfig);
-      TreeMap   wlPatients = dbConnection.connectionTest();
+                TreeMap<String,Study>   pacsPatients =  cFind.cFind();
+                TreeMap <String,Study>  pacsPatients2 = (TreeMap) pacsPatients.clone();
+                 DBconecction dbConnection = new DBconecction(dcmConfig);
+                TreeMap   wlPatients = dbConnection.connectionTest();
        
       
       Set <String> anKeys = pacsPatients2.keySet();
@@ -145,8 +151,21 @@ public class DCMmainWindow extends javax.swing.JFrame {
       );
       
         System.out.println("Estudios con inconsistencias: " + pacsPatients.size());
-        
-        
+                 
+                 
+                 
+                  
+                 ArrayList<String> sts = new ArrayList<String>();
+                
+                
+                 pacsPatients.forEach( (an,st) ->{
+                        sts.add(st.getStudyPatient().getPatientName());
+                        patientList.add(st.getStudyPatient().getPatientName() );
+                 });
+                 
+                    
+                    studyPanel.setVisible(true);
+                    
        
        int i=0;
              }
@@ -163,7 +182,7 @@ public class DCMmainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDCMfind;
     private javax.swing.JButton jButton2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
+    private java.awt.List patientList;
+    private javax.swing.JScrollPane studyPanel;
     // End of variables declaration//GEN-END:variables
 }
