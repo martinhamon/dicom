@@ -4,20 +4,6 @@
  */
 package dicom;
 
-import dicom.basedatos.DBconecction;
-import dicom.config.DCMconfig;
-import dicom.operations.DCMassociation;
-import dicom.operations.DCMcecho;
-import dicom.operations.DCMcfind;
-import dicom.operations.DCMimage;
-import dicom.operations.DCMinfo;
-import dicom.operations.DCMwado;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Set;
-import java.util.TreeMap;
-
 /**
  *
  * @author MH

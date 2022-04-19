@@ -7,27 +7,47 @@ package dicom;
 import dicom.basedatos.DBconecction;
 import dicom.config.DCMconfig;
 import dicom.operations.DCMcfind;
+import dicom.statics.PieChart;
 import dicom.utils.Study;
-import java.util.ArrayList;
+import dicom.utils.StudyListModel;
+import java.awt.BorderLayout;
+import java.awt.Color;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
-import javax.swing.DefaultListModel;
-import javax.swing.JList;
-import javax.swing.ListSelectionModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.general.DefaultPieDataset;
+import org.jfree.ui.RefineryUtilities;
 
 /**
  *
  * @author MH
  */
 public class DCMmainWindow extends javax.swing.JFrame {
-
+    StudyListModel list = new StudyListModel();
+       
+      DefaultPieDataset dataset = new DefaultPieDataset( );
+      int dx =0;
+      int mr =0;
+      int ct =0;
+      int us =0;
+      int mg =0;
+      
+                    
+        JFreeChart chart = ChartFactory.createPieChart(      
+         "Estadisticas por modalidad",   // chart title 
+         dataset,          // data    
+         true,             // include legend   
+         true, 
+         false);
     /**
      * Creates new form DCMmainWindow
      */
     public DCMmainWindow() {
         initComponents();
+         
     }
 
     /**
@@ -42,7 +62,12 @@ public class DCMmainWindow extends javax.swing.JFrame {
         btnDCMfind = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         studyPanel = new javax.swing.JScrollPane();
-        patientList = new java.awt.List();
+        patientList = new javax.swing.JList<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        studyInfoArea = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        lblCount = new javax.swing.JLabel();
+        modChartPanel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,7 +82,43 @@ public class DCMmainWindow extends javax.swing.JFrame {
         jButton2.setText("jButton2");
 
         studyPanel.setViewportBorder(javax.swing.BorderFactory.createTitledBorder("Estudios inconcistentes"));
+
+        patientList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                patientListMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                patientListMousePressed(evt);
+            }
+        });
+        patientList.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                patientListPropertyChange(evt);
+            }
+        });
         studyPanel.setViewportView(patientList);
+
+        studyInfoArea.setColumns(20);
+        studyInfoArea.setRows(5);
+        studyInfoArea.setEnabled(false);
+        jScrollPane1.setViewportView(studyInfoArea);
+
+        jLabel1.setText("Estudios incorrectos");
+
+        lblCount.setText("0");
+
+        modChartPanel.setBackground(new java.awt.Color(255, 51, 204));
+
+        javax.swing.GroupLayout modChartPanelLayout = new javax.swing.GroupLayout(modChartPanel);
+        modChartPanel.setLayout(modChartPanelLayout);
+        modChartPanelLayout.setHorizontalGroup(
+            modChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 309, Short.MAX_VALUE)
+        );
+        modChartPanelLayout.setVerticalGroup(
+            modChartPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 295, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -68,22 +129,42 @@ public class DCMmainWindow extends javax.swing.JFrame {
                 .addComponent(studyPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 306, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnDCMfind)
-                    .addComponent(jButton2))
-                .addContainerGap(53, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(modChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnDCMfind)
+                                        .addGap(41, 41, 41)
+                                        .addComponent(jLabel1)))
+                                .addGap(27, 27, 27)
+                                .addComponent(lblCount)))
+                        .addGap(0, 286, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addComponent(btnDCMfind)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(33, 33, 33)
+                        .addComponent(btnDCMfind))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(lblCount))))
                 .addGap(18, 18, 18)
                 .addComponent(jButton2)
-                .addContainerGap(275, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(studyPanel)
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addComponent(modChartPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
+            .addComponent(studyPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 527, Short.MAX_VALUE)
         );
 
         pack();
@@ -151,28 +232,81 @@ public class DCMmainWindow extends javax.swing.JFrame {
       );
       
         System.out.println("Estudios con inconsistencias: " + pacsPatients.size());
-                 
-                 
-                 
-                  
-                 ArrayList<String> sts = new ArrayList<String>();
-                
+               
                 
                  pacsPatients.forEach( (an,st) ->{
-                        sts.add(st.getStudyPatient().getPatientName());
-                        patientList.add(st.getStudyPatient().getPatientName() );
+                    
+                        
+                        list.addStudy(st);
+                      String mod=  st.getStudyModality().toLowerCase().trim();
+                      switch (mod) {
+                         case "dx":
+                             dx++;
+                             break;
+                             case "mr":
+                             mr++;
+                             break;
+                             case "ct":
+                             ct++;
+                             break;
+                             case "us":
+                             us++;
+                             break;
+                             case "mg":
+                             mg++;
+                             break;
+                         default:
+                             throw new AssertionError();
+                     }
+                        
                  });
                  
-                    
+                    patientList.setModel(list);
                     studyPanel.setVisible(true);
+                   
+                    lblCount.setText(  Integer.toString( pacsPatients.size()));
                     
+                    lblCount.setForeground(Color.RED);
+                    
+                    
+                    
+                    
+                
+                   
+                    dataset.setValue( "DX" , dx );  
+                    dataset.setValue( "MR" , mr );   
+                    dataset.setValue( "CT" , ct );    
+                    dataset.setValue( "US" , us ); 
+                    dataset.setValue( "MG" , mg ); 
+                    
+                    ChartPanel myChart = new ChartPanel(chart);
+                   // myChart.setMouseWheelEnabled(true);
+                    modChartPanel.setLayout(new java.awt.BorderLayout());
+                    modChartPanel.add(myChart,BorderLayout.CENTER);
+                    modChartPanel.validate();
+                     
        
-       int i=0;
              }
     }.start();
     
         
     }//GEN-LAST:event_btnDCMfindActionPerformed
+
+    private void patientListMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patientListMousePressed
+       
+    }//GEN-LAST:event_patientListMousePressed
+
+    private void patientListPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_patientListPropertyChange
+      
+    }//GEN-LAST:event_patientListPropertyChange
+
+    private void patientListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patientListMouseClicked
+        int selection = patientList.getSelectedIndex();
+        if (selection!=-1) {
+            Study s = list.getStudy(selection);
+            studyInfoArea.setText(s.getStudyAccessionNumber() + " " + s.getStudyDescription());
+        }
+    }//GEN-LAST:event_patientListMouseClicked
 
     /**
      * @param args the command line arguments
@@ -182,7 +316,12 @@ public class DCMmainWindow extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDCMfind;
     private javax.swing.JButton jButton2;
-    private java.awt.List patientList;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblCount;
+    private javax.swing.JPanel modChartPanel;
+    private javax.swing.JList<String> patientList;
+    private javax.swing.JTextArea studyInfoArea;
     private javax.swing.JScrollPane studyPanel;
     // End of variables declaration//GEN-END:variables
 }
